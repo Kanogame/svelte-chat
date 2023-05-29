@@ -15,7 +15,12 @@
 </script>
 
 <form on:submit|preventDefault={submit}>
-  <input type="text" placeholder="Имя" bind:value={user}>
+  <input
+    type="text"
+    placeholder="Имя"
+    bind:value={user}
+    autofocus
+  >
   {#if erMsg}
     <div>{erMsg}</div>
   {/if}

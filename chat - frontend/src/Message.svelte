@@ -36,7 +36,7 @@
   .text {
     font-size: 14px;
     overflow-x: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     /* word-break: break-all; */
   }
 </style>

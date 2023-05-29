@@ -4,10 +4,26 @@
   export let user;
 
   let backendIp = '127.0.0.1';
-  // backendIp = '';
+  backendIp = '192.168.1.54';
   let messages = null;
   let newMessage = '';
-  load();
+  let msgList;
+  let msgCount = 0;
+  
+  start();
+
+  setInterval(async () => {
+    await load();
+    if (messages && messages.length > msgCount) {
+      msgCount = messages.length;
+      toBottom();
+    }
+  }, 500);
+
+  async function start() {
+    await load();
+    toBottom();
+  }
 
   async function load() {
     try {
@@ -23,6 +39,9 @@
   }
 
   async function sendMessage() {
+    if (!newMessage.replace(/\s/g, '').length) {
+      return;
+    }
     try {
       const resp = await fetch(`//${backendIp}:13531/api/message_add`, {
         method: 'POST',
@@ -43,6 +62,7 @@
     }
     newMessage = '';
     await load();
+    toBottom();
   }
 
   async function keydown(ev) {
@@ -51,13 +71,19 @@
       await sendMessage();
     }
   }
+
+  function toBottom() {
+    if (msgList) {
+      msgList.scrollTop = msgList.scrollHeight;
+    }
+  }
 </script>
 
 {#if messages === null}
   <div class="loading">Загрузка...</div>
 {:else}
   <div class="chat">
-    <div class="msg-list">
+    <div class="msg-list" bind:this={msgList}>
       {#each messages as msg (msg.id)}
         <Message
           isMine={msg.user === user}
@@ -70,6 +96,7 @@
         bind:value={newMessage}
         placeholder='Сообщение'
         on:keydown={keydown}
+        autofocus
       ></textarea>
       <button on:click={sendMessage}>Отпр.</button>
     </div>
