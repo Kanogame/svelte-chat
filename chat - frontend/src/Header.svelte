@@ -1,5 +1,5 @@
 <div class="header">
-  Сигма Чат
+  KANO Чат
 </div>
 
 <style>
