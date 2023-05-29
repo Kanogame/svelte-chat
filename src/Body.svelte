@@ -1,11 +1,14 @@
 <script>
     import Chat from "./Chat.svelte";
+    import Login from "./Login.svelte";
 </script>
 
 <div class="body">
     <div class="body-content">
         {#if chat}
             <Chat/>
+        {:else} 
+            <login />
         {/if}
     </div>
 </div>
